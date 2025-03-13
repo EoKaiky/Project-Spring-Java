@@ -1,13 +1,19 @@
 package br.com.estudos.screenmatch.principal;
 
+import br.com.estudos.screenmatch.model.DadosSerie;
+import br.com.estudos.screenmatch.model.DadosTemporada;
 import br.com.estudos.screenmatch.service.ConsumoApi;
+import br.com.estudos.screenmatch.service.ConverteDados;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Principal {
 
     private Scanner leitura = new Scanner(System.in);
     private ConsumoApi consumo = new ConsumoApi();
+    private ConverteDados conversor = new ConverteDados();
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=b370b0c";
 
@@ -15,5 +21,19 @@ public class Principal {
         System.out.println("Digite o nome da série para buscar: ");
         var nomeSerie = leitura.nextLine();
         var json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
+        DadosSerie dados = conversor.ObterDados(json, DadosSerie.class);
+        System.out.println(dados);
+
+        List<DadosTemporada> temporadas = new ArrayList<>();
+
+
+		for (int i = 1; i<=dados.totalSeasons(); i++) {
+			json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") +"&season=" + i + API_KEY);
+			DadosTemporada dadosTemporada = conversor.ObterDados(json, DadosTemporada.class);
+			temporadas.add(dadosTemporada);
+
+		}
+		temporadas.forEach(System.out::println);
     }
+
 }
