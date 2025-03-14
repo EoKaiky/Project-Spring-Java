@@ -7,8 +7,10 @@ import br.com.estudos.screenmatch.service.ConsumoApi;
 import br.com.estudos.screenmatch.service.ConverteDados;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -44,6 +46,16 @@ public class Principal {
 //        }
 
         temporadas.forEach(t -> t.episodes().forEach(e -> System.out.println(e.title())));
+        List<DadosEpisode> dadosEpisodes = temporadas.stream()
+                .flatMap(t -> t.episodes().stream())
+                .collect(Collectors.toList());
+
+        System.out.println("\nTop 5 episódios");
+        dadosEpisodes.stream()
+                .filter(e -> !e.rating().equalsIgnoreCase("N/A"))
+                .sorted(Comparator.comparing(DadosEpisode::rating).reversed())
+                .limit(5)
+                .forEach(System.out::println);
     }
 
 }
