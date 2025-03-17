@@ -66,10 +66,10 @@ public class Principal {
         System.out.println("Digite o titulo do episódio: ");
         var trechoTitulo = leitura.nextLine();
         Optional<Episodios> episodioBuscado = episodios.stream()
-                .filter(e -> e.getTitulo().contains(trechoTitulo))
+                .filter(e -> e.getTitulo().toUpperCase().contains(trechoTitulo.toUpperCase()))
                 .findFirst();
         if (episodioBuscado.isPresent()) {
-            System.out.println("Episódio encontrado: ");
+            System.out.println("Episódio encontrado: " + episodioBuscado.get().getTitulo());
             System.out.println("Temporada: " + episodioBuscado.get().getTemporada());
         } else {
             System.out.println("Epidósdio não encontrado!");
