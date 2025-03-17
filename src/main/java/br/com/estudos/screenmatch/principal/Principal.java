@@ -41,12 +41,6 @@ public class Principal {
 		}
 		temporadas.forEach(System.out::println);
 
-//        for (int i = 0; i < dados.totalSeasons(); i++ ){
-//            List<DadosEpisode> episodiosTemporada = temporadas.get(i).episodes();
-//            for (int j = 0; j < episodiosTemporada.size(); j++){
-//                System.out.println(episodiosTemporada.get(j).title());
-//            }
-//        }
 
         temporadas.forEach(t -> t.episodes().forEach(e -> System.out.println(e.title())));
         List<DadosEpisode> dadosEpisodes = temporadas.stream()
@@ -56,8 +50,13 @@ public class Principal {
         System.out.println("\nTop 5 episódios");
         dadosEpisodes.stream()
                 .filter(e -> !e.rating().equalsIgnoreCase("N/A"))
+                .peek(e-> System.out.println("Primeiro fltro(N/A " + e))
                 .sorted(Comparator.comparing(DadosEpisode::rating).reversed())
-                .limit(5)
+                .peek(e -> System.out.println("Ordenação: " + e))
+                .limit(10)
+                .peek(e -> System.out.println("Limite: " + e))
+                .map(e -> e.title().toUpperCase())
+                .peek(e -> System.out.println("Mapeamento: " + e))
                 .forEach(System.out::println);
 
         List<Episodios> episodios = temporadas.stream()
