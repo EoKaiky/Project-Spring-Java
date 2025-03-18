@@ -97,6 +97,14 @@ public class Principal {
                 .collect(Collectors.groupingBy(Episodios::getTemporada,
                         Collectors.averagingDouble(Episodios::getAvaliacao)));
         System.out.println(avaliacoesTmeporada);
+
+        DoubleSummaryStatistics statistc = episodios.stream()
+                .filter(e -> e.getAvaliacao() > 0.0)
+                .collect(Collectors.summarizingDouble(Episodios::getAvaliacao));
+        System.out.println("Média: " + statistc.getAverage());
+        System.out.println("Melhor Episódio: " + statistc.getMax());
+        System.out.println("Pior Episódio: " + statistc.getMin());
+        System.out.println("Quantidade: " + statistc.getCount());
     }
 
 }
